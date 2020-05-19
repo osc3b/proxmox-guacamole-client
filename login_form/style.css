@@ -1,0 +1,98 @@
+* { margin: 0; padding: 0; }
+
+
+
+html { height: 100%; font-size: 62.5% }
+
+
+
+body { height: 100%; background-color: #FFFFFF; font: 1.2em Verdana, Arial, Helvetica, sans-serif; }
+
+
+
+
+
+/* ==================== Form style sheet ==================== */
+
+
+
+table.form { margin-left: 200px; margin-top: 20px; border-collapse: collapse; border: 1px solid #DDDDDD; }
+
+
+
+table.form th, table.form td { padding: 4px 5px 10px; text-align: left; font-weight: normal; }
+
+
+
+table.form label { font-family: Verdana, Arial, Helvetica, sans-serif; color: #181818; margin-right: 12px; }
+
+table.form td span { font-size: 0.9em; color: #181818; margin-left: 8px; }
+
+table.form td samp { font: 1em Verdana, Arial, Helvetica, sans-serif; color: #000000; }
+
+
+
+table.form input { width: 340px; }
+
+table.form input.answer { width: 53px; }
+
+table.form textarea { width: 400px; height: 160px; }
+
+
+
+table.form input.inp-text, table.form input.answer, table.form textarea
+
+{ border: 1px solid #909090; padding: 2px; }
+
+
+
+table.form th.message-up { vertical-align: top !important; }
+
+
+
+table.form label.invisible { visibility: hidden; }
+
+
+
+table.form td.submit-button-right { text-align: right !important; }
+
+table.form input.submit-text { font: 1.4em Georgia, "Times New Roman", Times, serif; letter-spacing: 1px; width: auto; }
+
+
+
+table.form label.email { border-bottom: 1px dotted #000000; }
+
+h1{
+    margin-left: 200px; 
+    margin-top: 75px;
+}
+
+
+
+/* ==================== Form style sheet END ==================== */
+
+.thanks-text{margin-left: 200px; margin-top: 100px;}
+
+.tut{padding:60px 0 0 0; font: 1.4em Georgia, "Times New Roman", Times, serif; }
+
+
+
+.send_btn {
+
+    background: none repeat scroll 0 0 #0D92E1;
+
+    border: medium none;
+
+    color: #FFFFFF;
+
+    cursor: pointer;
+
+    font: bold 15px/13px Arial,Helvetica,sans-serif;
+
+    height: 35px;
+
+    width: 100px !important;
+
+	padding: 5px 15px 5px 15px;
+
+}
