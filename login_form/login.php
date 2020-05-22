@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if ($query->num_rows > 0) { //Contraseña y usuario coinciden
 				
 				$mysqli->close();
-				header('Location: SIGUIENTE'); //Envia a la siguiente web
+				header('Location: ../servers.php'); //Envia a la siguiente web
 				exit;
 			}
 			$msg = "Username and password do not match";

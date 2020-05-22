@@ -1,0 +1,13 @@
+---
+- hosts: 192.168.1.10
+  remote_user: root
+  tasks:
+    - proxmox_kvm:
+        api_user    : root@pam
+        api_password: pass
+        api_host    : 192.168.1.10
+        name        : windows10-template
+        node        : proxmox
+        state       : current
+      register    : result
+    - debug: msg="{{ result.status }}"
