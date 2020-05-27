@@ -2,12 +2,12 @@
 
 function startPrueba1(){
     $out = shell_exec("/usr/bin/ansible-playbook /var/www/html/playbooks/pruebaStart.yml 2>&1");
-    echo $out . "<br><br><b>Máquina iniciada (o no), entrar a la máquina Windows en: <a href='http://84.125.210.39:3333/guacamole'>84.125.210.39:3333/guacamole</a></b>";
+    return $out; //. "<br><br><b>Máquina iniciada (o no), entrar a la máquina Windows en: <a href='http://84.125.210.39:3333/guacamole'>84.125.210.39:3333/guacamole</a></b>";
 }
 
 function stopPrueba1(){
     $out = shell_exec("/usr/bin/ansible-playbook /var/www/html/playbooks/pruebaStop.yml 2>&1");
-    echo $out;
+    return $out;
 }
 
 function statusPrueba1(){

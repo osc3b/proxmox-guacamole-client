@@ -1,5 +1,13 @@
 <?php include "dbConfig.php";
 
+session_start();
+ 
+// Check if the user is already logged in, if yes then redirect him to servers
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("location: ../servers.php");
+    exit;
+}
+
 $msg = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST["name"];
@@ -10,10 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$msg = "Username and password do not match";
 	}else{
 		$salt = $query->fetch_row()[0];
-	
+		
 		$password = $_POST["password"];
+		$salt = $mysqli->real_escape_string($salt); //Escape el string para meterlo en una sentencia sql de forma segura
+
 		$sql = "SELECT UNHEX(SHA2(CONCAT('$password', HEX('$salt')), 256))"; //Codifica la contraseña: Salt + SHA-256
 		$query = $mysqli->query($sql);
+		if ($query === FALSE) { //Error al codificar la cadena
+			echo "Could not successfully run query ($sql) from DB: " . $mysqli->error;
+			exit;
+		}
 		$password = $query->fetch_row()[0];
 
 		if ($name == '' || $password == '') {
@@ -28,7 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 
 			if ($query->num_rows > 0) { //Contraseña y usuario coinciden
-				
+				session_start();       
+                // Store data in session variables
+                $_SESSION["loggedin"] = true;
+                //$_SESSION["id"] = $id;
+                $_SESSION["username"] = $name;  
 				$mysqli->close();
 				header('Location: ../servers.php'); //Envia a la siguiente web
 				exit;
