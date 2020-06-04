@@ -6,8 +6,6 @@
         api_user    : root@pam
         api_password: pass
         api_host    : 192.168.1.10
-        name        : w10-simple-clone-osc3b
+        name        : "{{ vmname }}"
         node        : proxmox
-        state       : current
-      register    : result
-    - debug: msg="{{ result.status }}"
+        state       : started

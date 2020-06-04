@@ -1,0 +1,22 @@
+---
+- hosts: 192.168.1.10
+  remote_user: root
+  tasks:
+    - proxmox_kvm:
+        api_user    : root@pam
+        api_password: pass
+        api_host    : 192.168.1.10
+        node        : proxmox
+        clone       : arbitrary_name
+        vmid        : 101
+        #newid       : 111 #Seleccionar automaticamente y devolver
+        name        : w10-simple-clone-{{ username }}
+        full        : no
+        net         : '{"net0":"virtio,bridge=vmbr0"}'
+        timeout     : 300
+      register    : result
+    - debug: 
+        msg:
+        - "{{ result.failed }}"
+        - "{{ result.vmid }}"
+        - "{{ result.mac.net0 }}"

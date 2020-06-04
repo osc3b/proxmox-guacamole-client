@@ -6,6 +6,6 @@
         api_user    : root@pam
         api_password: pass
         api_host    : 192.168.1.10
-        name        : windows10-template
+        name        : "{{ vmname }}"
         node        : proxmox
         state       : stopped

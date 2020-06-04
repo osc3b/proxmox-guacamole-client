@@ -91,7 +91,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         <table class="w3-table w3-striped w3-white">
           <tr>
             <td><i class="fa fa-user w3-text-blue w3-large"></i>&nbsp;&nbsp; Windows 10 - RDP </td>
-            <td><iframe src="./machine_prueba.php" height=60 width=100% style="border:none;"></iframe></td>
+            <td id="w10">
+              <iframe src="./machine_prueba.php" height=60 width=100% style="border:none;" onload='document.getElementById("w10").style.backgroundImage = "none";'></iframe>
+            </td>
             <td><i>10 mins</i></td>
             <td><a href="http://0.0.0.0:3333/guacamole/" target="_blank">View</a></td>
           </tr>
@@ -173,6 +175,7 @@ function w3_close() {
   mySidebar.style.display = "none";
   overlayBg.style.display = "none";
 }
+
 </script>
 
 </body>
