@@ -1,5 +1,6 @@
 ---
 - hosts: 192.168.1.10
+  serial: 1
   remote_user: root
   tasks:
     - proxmox_kvm:
@@ -9,3 +10,4 @@
         name        : "{{ vmname }}"
         node        : proxmox
         state       : started
+      throttle: 1

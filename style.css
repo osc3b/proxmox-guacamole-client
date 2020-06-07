@@ -9,8 +9,31 @@
 .vmstatus{
   font-weight: bold;
   color: red;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.connect{
+  width: 70px;
+}
+
+.timer{
+  text-align: right;
+}
+
+.timer img{
+  display: block;
+  margin-bottom: 4px;
+  margin-left: 5px;
 }
 
 #w10{
-  background: url(https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif) left center no-repeat; 
+  background: url(./img/loading.gif) left center no-repeat; 
+}
+
+#u20{
+  background: url(./img/loading.gif) left center no-repeat; 
+}
+
+#d10{
+  background: url(./img/loading.gif) left center no-repeat; 
 }

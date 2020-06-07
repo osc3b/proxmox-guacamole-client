@@ -9,7 +9,7 @@
         node        : proxmox
         clone       : arbitrary_name
         vmid        : 101
-        #newid       : 111 #Seleccionar automaticamente y devolver
+        newid       : "{{ newvmid }}"
         name        : w10-simple-clone-{{ username }}
         full        : no
         net         : '{"net0":"virtio,bridge=vmbr0"}'

@@ -12,16 +12,18 @@ function stopVM($vm){
     return $out;
 }
 
-function statusVM(){
-    $out = shell_exec("/usr/bin/ansible-playbook /var/www/html/playbooks/pruebaStatus.yml | grep msg");
+function statusVM($vm){
+    $out = shell_exec("/usr/bin/ansible-playbook /var/www/html/playbooks/statusVM.yml --extra-vars " . 
+    "'{\"vmname\":\"$vm\"}'" . " 2>&1" . " | grep msg");
     list($status) = sscanf(ltrim($out),'"msg": "%s'); //Filtrar el resultado para solo guardar el status
     $status = substr($status, 0, -1); //Quita unas comillas dobles al final
     return $status;
 }
 
 function cloneSimpleW10($username){
+    $vmid = rand(200,99999);
     $out = shell_exec("/usr/bin/ansible-playbook /var/www/html/playbooks/w10SimpleClone.yml --extra-vars " . 
-        "'{\"username\":\"$username\"}'");
+        "'{\"username\":\"$username\",\"newvmid\":\"$vmid\"}'" . " 2>&1");
     //echo $out . "<br>";
     $msg = strstr($out, "\"msg\"");
     $msg = strstr($msg, '}', true); //Solo las variables que me interesan
@@ -29,12 +31,16 @@ function cloneSimpleW10($username){
         $msg = substr($msg, 9, -3); //Quita el principio, dos espacios y el corchete
         $vars = explode(", ", $msg); //Guarda en un vector los datos de la VM
     }
-    if($vars[0]){ //Si el comando se ha ejecutado correctamente
+    if(trim($vars[0]) == "false"){ //Si el comando se ha ejecutado correctamente
         $info["vmid"] = substr(trim($vars[1]), 1, -1);
         $info["mac"] = substr(trim($vars[2]), 1, -1);
+        if($info["vmid"] != $vmid) //Si la VMID difiere
+            return "IDERROR";
+        else 
+            return $info;
     }
-    echo $info["vmid"] . " MAC: " . $info["mac"];
-    return $info;
+    //echo $info["vmid"] . " MAC: " . $info["mac"];
+    return "ERROR";
 }
 
 function deleteVM($vm){

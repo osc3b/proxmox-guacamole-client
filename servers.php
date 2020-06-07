@@ -20,10 +20,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){ //If not lo
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript" src="./servers.js"></script>
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
-<body class="w3-light-grey">
+<body class="w3-light-grey" onload="updateInfo()">
 
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
@@ -46,7 +47,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-red w3-padding-16">
         <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
         <div class="w3-right">
-          <h3>24</h3>
+          <h3>-</h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Machines ON</h4>
@@ -56,7 +57,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-blue w3-padding-16">
         <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
         <div class="w3-right">
-          <h3>76</h3>
+          <h3>-</h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Free Slots</h4>
@@ -66,7 +67,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-teal w3-padding-16">
         <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
         <div class="w3-right">
-          <h3>1</h3>
+          <h3><?php echo $_SESSION["slots"]; ?></h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Your Available Slots</h4>
@@ -90,30 +91,49 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container">
         <table class="w3-table w3-striped w3-white">
           <tr>
-            <td><i class="fa fa-user w3-text-blue w3-large"></i>&nbsp;&nbsp; Windows 10 - RDP </td>
+            <td><i class="fa fa-user w3-text-blue w3-large"></i>&nbsp;&nbsp; Windows 10 - Basic </td>
             <td id="w10">
-              <iframe src="./machine_prueba.php" height=60 width=100% style="border:none;" onload='document.getElementById("w10").style.backgroundImage = "none";'></iframe>
+              <iframe id="framew10" src="machine_w10_simple.php" height=60 width=100% style="border:none;" onload="frameLoadedW10()"></iframe>
             </td>
-            <td><i>10 mins</i></td>
-            <td><a href="http://0.0.0.0:3333/guacamole/" target="_blank">View</a></td>
+            <td class="timer"><img src="./img/crono.png"><i>
+              <?php
+                if(isset($_SESSION['timeStartedW10'])){
+                  $now = time();
+                  $timeSince = $now - $_SESSION['timeStartedW10'];
+                  $remainingSeconds = 300 - $timeSince; //5 min
+                  if($remainingSeconds < 1){ //Only occurs when the page is reloaded
+                    $_SESSION["slots"]++;
+                    stopVM("w10-simple-clone-" . $_SESSION["username"]); //TODO: Check needed
+                    deleteVM("w10-simple-clone-" . $_SESSION["username"]);
+                    unset($_SESSION['timeStartedW10']);
+                  }
+                }
+              ?>
+              <div id="w10time"></div></i></td>
+            <td class="connect"><a href="http://0.0.0.0:3333/guacamole/" target="_blank">
+              <img src="./img/connect<?php if(!isset($_SESSION['timeStartedW10'])){ echo "Off"; }?>.png" alt="Connect"></a></td>
           </tr>
           <tr>
-            <td><i class="fa fa-user w3-text-red w3-large"></i>&nbsp;&nbsp; Debian 10 - VNC </td>
-            <td><iframe src="" height=60 width=100% style="border:none;"></iframe></td>
+            <td><i class="fa fa-user w3-text-red w3-large"></i>&nbsp;&nbsp; Ubuntu 20.04 </td>
+            <td id="u20">
+              <iframe id="frameu20" src="" height=60 width=100% style="border:none;" onload=""></iframe>
+            </td>
             <td><i>Off</i></td>
-            <td><a href="http://0.0.0.0:3333/guacamole/" target="_blank">View</a></td>
+            <td class="connect"><a href="http://0.0.0.0:3333/guacamole/" target="_blank"><img src="./img/connectOff.png" alt="Connect"></a></td>
           </tr>
           <tr>
-            <td><i class="fa fa-user w3-text-green w3-large"></i>&nbsp;&nbsp; Debian 10 - SSH </td>
-            <td><iframe src="" height=60 width=100% style="border:none;"></iframe></td>
+            <td><i class="fa fa-user w3-text-green w3-large"></i>&nbsp;&nbsp; Debian 10 </td>
+            <td id="d10">
+              <iframe id="framed10" src="" height=60 width=100% style="border:none;" onload=""></iframe>
+            </td>
             <td><i>Off</i></td>
-            <td><a href="http://0.0.0.0:3333/guacamole/" target="_blank">View</a></td>
+            <td class="connect"><a href="http://0.0.0.0:3333/guacamole/" target="_blank"><img src="./img/connectOff.png" alt="Connect"></a></td>
           </tr>
           <tr>
             <td><i class="fa fa-user w3-text-yellow w3-large"></i>&nbsp;&nbsp; ... </td>
             <td><iframe src="" height=60 width=100% style="border:none;"></iframe></td>
             <td><i>Off</i></td>
-            <td><a href="http://0.0.0.0:3333/guacamole/" target="_blank">View</a></td>
+            <td class="connect"><a href="http://0.0.0.0:3333/guacamole/" target="_blank"><img src="./img/connectOff.png" alt="Connect"></a></td>
           </tr>
         </table>
       </div>
@@ -124,17 +144,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <h5><i class="fa fa-bell"></i> Stats</h5>
     <p>Your Machines ON</p>
     <div class="w3-grey">
-      <div class="w3-container w3-center w3-padding w3-green" style="width:25%">1/4</div>
+      <div id="onBar" class="w3-container w3-center w3-padding w3-green" style="width:4%"><?php echo $_SESSION["ons"]; ?>/3</div>
     </div>
 
     <p>Your Machines Slots</p>
     <div class="w3-grey">
-      <div class="w3-container w3-center w3-padding w3-orange" style="width:50%">2/4</div>
-    </div>
-
-    <p>Global Machines ON</p>
-    <div class="w3-grey">
-      <div class="w3-container w3-center w3-padding w3-red" style="width:75%">75%</div>
+      <div id="slotsBar" class="w3-container w3-center w3-padding w3-red" style="width:4%"><?php echo 3-$_SESSION["slots"]; ?>/3</div>
     </div>
   </div>
   <hr>
@@ -149,31 +164,56 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
   </footer>
 
-  <!-- End page content -->
 </div>
 
-<script>
-// Get the Sidebar
-var mySidebar = document.getElementById("mySidebar");
+<script type='text/javascript'>
 
-// Get the DIV with overlay effect
-var overlayBg = document.getElementById("myOverlay");
+//This functions needs to be on the php code to work, the remaining ones are on the .js
 
-// Toggle between showing and hiding the sidebar, and add overlay effect
-function w3_open() {
-  if (mySidebar.style.display === 'block') {
-    mySidebar.style.display = 'none';
-    overlayBg.style.display = "none";
-  } else {
-    mySidebar.style.display = 'block';
-    overlayBg.style.display = "block";
-  }
+function setupRefresh() {
+    setTimeout("updateInfo();", 100); // milliseconds
 }
 
-// Close the sidebar with the close button
-function w3_close() {
-  mySidebar.style.display = "none";
-  overlayBg.style.display = "none";
+var reloaded = false;
+
+function updateInfo(){
+    var timeNow = Math.floor(Date.now() / 1000);
+    timeW10 = "<?php 
+      if(isset($_SESSION['timeStartedW10']))
+        echo $_SESSION['timeStartedW10'];
+      else
+        echo "null";
+    ?>";
+    var timeSince = timeNow - timeW10;
+    var timeLeft = 300 - timeSince;
+    if(timeLeft > 0){ //Windows 10 timer
+        document.getElementById("w10time").innerHTML = timeLeft + " segs";
+        reloaded = false;
+    }else{
+        document.getElementById("w10time").innerHTML = "-";
+        if(timeLeft <= 0 && !reloaded){ //NaN values are not valid
+          reloaded = true;
+          console.log("Time W10 Consumed. Reload.");
+          window.location = window.location.href; //reload
+        }
+    }
+    var slots = "<?php echo 3-$_SESSION["slots"]; ?>"
+    if(slots <= 0) //Slots bar
+      document.getElementById("slotsBar").style.width = "4%";
+    else{
+      var p = slots * 33;
+      document.getElementById("slotsBar").style.width = p + "%";
+    }
+    var ons = "<?php echo $_SESSION["ons"]; ?>"
+    if(ons <= 0) //On bar
+      document.getElementById("onBar").style.width = "4%";
+    else{
+      var p = ons * 33;
+      document.getElementById("onBar").style.width = p + "%";
+    }
+      
+    console.log("Info updated.");
+    setupRefresh();
 }
 
 </script>
