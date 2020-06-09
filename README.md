@@ -23,3 +23,8 @@ Open Source software used in the project:
 - Python 3: https://www.python.org/
 
 And all of them implemented on Debian 9 and 10 machines.
+
+# Setup
+Diagram of the project's setup:
+
+![Image of the diagram](img/ProxmoxGuacamoleDiagram.png?raw=true)
