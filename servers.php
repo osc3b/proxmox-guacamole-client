@@ -77,7 +77,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-orange w3-text-white w3-padding-16">
         <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
         <div class="w3-right">
-          <h3>50</h3>
+          <h3>9</h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Users</h4>
@@ -103,6 +103,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
                   $remainingSeconds = 300 - $timeSince; //5 min
                   if($remainingSeconds < 1){ //Only occurs when the page is reloaded
                     $_SESSION["slots"]++;
+                    $_SESSION["ons"]--;
                     stopVM("w10-simple-clone-" . $_SESSION["username"]); //TODO: Check needed
                     deleteVM("w10-simple-clone-" . $_SESSION["username"]);
                     unset($_SESSION['timeStartedW10']);
@@ -110,7 +111,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
                 }
               ?>
               <div id="w10time"></div></i></td>
-            <td class="connect"><a href="http://0.0.0.0:3333/guacamole/" target="_blank">
+            <td class="connect"><a href="http://osc3b.my.to:3333/guacamole/" target="_blank">
               <img src="./img/connect<?php if(!isset($_SESSION['timeStartedW10'])){ echo "Off"; }?>.png" alt="Connect"></a></td>
           </tr>
           <tr>
@@ -119,7 +120,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
               <iframe id="frameu20" src="" height=60 width=100% style="border:none;" onload=""></iframe>
             </td>
             <td><i>Off</i></td>
-            <td class="connect"><a href="http://0.0.0.0:3333/guacamole/" target="_blank"><img src="./img/connectOff.png" alt="Connect"></a></td>
+            <td class="connect"><a href="http://osc3b.my.to:3333/guacamole/" target="_blank"><img src="./img/connectOff.png" alt="Connect"></a></td>
           </tr>
           <tr>
             <td><i class="fa fa-user w3-text-green w3-large"></i>&nbsp;&nbsp; Debian 10 </td>
@@ -127,13 +128,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
               <iframe id="framed10" src="" height=60 width=100% style="border:none;" onload=""></iframe>
             </td>
             <td><i>Off</i></td>
-            <td class="connect"><a href="http://0.0.0.0:3333/guacamole/" target="_blank"><img src="./img/connectOff.png" alt="Connect"></a></td>
+            <td class="connect"><a href="http://osc3b.my.to:3333/guacamole/" target="_blank"><img src="./img/connectOff.png" alt="Connect"></a></td>
           </tr>
           <tr>
             <td><i class="fa fa-user w3-text-yellow w3-large"></i>&nbsp;&nbsp; ... </td>
             <td><iframe src="" height=60 width=100% style="border:none;"></iframe></td>
             <td><i>Off</i></td>
-            <td class="connect"><a href="http://0.0.0.0:3333/guacamole/" target="_blank"><img src="./img/connectOff.png" alt="Connect"></a></td>
+            <td class="connect"><a href="http://osc3b.my.to:3333/guacamole/" target="_blank"><img src="./img/connectOff.png" alt="Connect"></a></td>
           </tr>
         </table>
       </div>

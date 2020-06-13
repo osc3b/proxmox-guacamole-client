@@ -1,4 +1,6 @@
-<?php include "dbConfig.php";
+<?php 
+
+include "../integrations/dbConfig.php";
 
 session_start();
  

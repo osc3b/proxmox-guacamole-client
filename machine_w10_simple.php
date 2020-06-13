@@ -12,6 +12,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){ //If not lo
 /********************************************/
 
 include "./integrations/ansible.php";
+include "./integrations/guacamole.php";
 
 printf("
 <!DOCTYPE html>
@@ -24,15 +25,21 @@ printf("
 	<body>
 ");
 
-if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['startPrueba1'])){
+if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['startPrueba1'])){ //START
     if(startVM("w10-simple-clone-" . $_SESSION["username"])){
 		$_SESSION["ons"]++;
+		sleep(15);
+		$ip = NULL;
+		while(!$ip)
+			$ip = searchIP($_SESSION["w10mac"]); //Search for the IP associated to the mac
+		//echo "IP:" . $ip;
+		createConnectionw10($_SESSION["username"], $ip); //Create the Guacamole connection in the database
 	}else{
 		printf("<script>alert('Error starting the machine: The Server was busy. Try again later.');</script>");
 	}
 }
 
-if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['stopPrueba1'])){
+if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['stopPrueba1'])){ //STOP
     if(stopVM("w10-simple-clone-" . $_SESSION["username"])){
 		$_SESSION["ons"]--;
 	}else{
@@ -40,21 +47,23 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['stopPrueba1'])){
 	}
 }
 
-if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['clonePrueba1'])){
-	if(count(cloneSimpleW10($_SESSION["username"])) == 2){ //The machine have been created successfully
+if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['clonePrueba1'])){ //CREATE
+	$info = cloneSimpleW10($_SESSION["username"]);
+	if(count($info) == 2){ //The machine have been created successfully
+		sleep(4);
 		if(!isset($_SESSION['timeStartedW10'])){
 			//Store the timestamp of when the countdown began.
 			$_SESSION['timeStartedW10'] = time();
 			$_SESSION["slots"]--;
+			$_SESSION["w10mac"] = $info["mac"];
 		}
-		sleep(3);
 		printf("<script>window.top.location = window.top.location.href;</script>"); //Reload the main page
 	}else{
 		printf("<script>alert('Error creating the machine: The Server was busy. Try again later.');</script>");
 	}
 }
 
-if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['deletePrueba1'])){
+if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['deletePrueba1'])){ //STOP
 	deleteVM("w10-simple-clone-" . $_SESSION["username"]);
 	if(isset($_SESSION['timeStartedW10'])){
 		unset($_SESSION['timeStartedW10']);
